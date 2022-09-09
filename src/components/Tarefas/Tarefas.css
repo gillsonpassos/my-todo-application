@@ -1,0 +1,77 @@
+.tarefas {
+  margin-top: 90px;
+}
+.tarefas li {
+  margin: 15px;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 15px;
+  padding-right: 1px;
+  border-radius: 12px;
+  padding-top: 1em;
+  padding-bottom: 0%;
+  background: #2e2d2d;
+  min-width: 100%;
+  letter-spacing: 2px;
+}
+
+.tarefas li {
+  position: relative;
+  background-color: #2e2d2d;
+}
+
+.tarefas li .edit {
+  align-items: center;
+  position: relative;
+  margin-right: 15px;
+  color: #fff;
+  top: -10px;
+}
+.tarefas li .delete {
+  align-items: center;
+  position: relative;
+  margin-right: 15px;
+  color: #fff;
+  top: -10px;
+}
+.tarefas div:hover .delete {
+  color: rgb(236, 2, 2);
+}
+.tarefas li:hover .edit {
+  color: rgb(105, 255, 5);
+}
+
+.delete {
+  cursor: pointer;
+}
+.edit {
+  cursor: pointer;
+}
+
+.tarefas li span {
+  display: flex;
+  align-items: center;
+}
+.tarefas input[type='checkbox'] {
+  font-family: system-ui, sans-serif;
+  transform: matrix3d(0);
+  font: inherit;
+  color: currentColor;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 0.15em;
+  font-weight: bold;
+  line-height: 1.2;
+  grid-template-columns: 1em auto;
+  gap: 10px;
+  transform: translateY(-0.075em);
+}
+input[type='checkbox']:checked::before {
+  transform: scale(1);
+}
+.tarefas p {
+  position: relative;
+  top: -19px;
+  left: 30px;
+}
