@@ -5,6 +5,12 @@
   max-width: 750px;
   border-radius: 6px;
 }
+
+.tarefas {
+  background: red
+}
+
+
 .main .tarefas {
   color: #fff;
 }
