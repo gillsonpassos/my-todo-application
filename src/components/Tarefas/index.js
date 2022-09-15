@@ -1,24 +1,35 @@
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable no-undef */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FiEdit2, FiTrash } from 'react-icons/fi';
 
 import taskStyle from './Tarefas.module.css';
 
-export default function Tarefas({ tarefas, handleEdit, handleDelete }) {
+export default function Tarefas({
+  tarefas,
+  handleEdit,
+  handleDelete,
+  handleTogleIsCompleted,
+}) {
   return (
     <ul className={taskStyle.tarefas}>
       {tarefas.map((tarefa, index) => (
-        <li key={tarefa}>
+        <li key={tarefa.id}>
           <div>
-            <input type="checkbox" className={taskStyle.teste} />
-            <p> {tarefa}</p>
+            <input
+              type="checkbox"
+              className={taskStyle.teste}
+              checked={tarefa.isCompleted}
+              onChange={() => handleTogleIsCompleted(tarefa.id)}
+            />
+            <p> {tarefa.name}</p>
           </div>
           <span>
             <FiEdit2
               className={taskStyle.edit}
-              onClick={(e) => handleEdit(e, index)}
+              onClick={() => handleEdit(tarefa)}
             />
-
             <div>
               <FiTrash
                 onClick={(e) => handleDelete(e, index)}
@@ -36,4 +47,5 @@ Tarefas.propTypes = {
   tarefas: PropTypes.array.isRequired,
   handleEdit: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
+  handleTogleIsCompleted: PropTypes.func.isRequired,
 };

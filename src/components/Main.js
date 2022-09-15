@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import Form from './Form';
 import Tarefas from './Tarefas';
-
+import Modal from './Modal';
 import './Main.css';
-
 export default class Main extends Component {
   state = {
-    novaTarefa: '',
+    inputTarefa: '',
     tarefas: [],
-    index: -1,
+    isModalOpen: false,
+    editingTodo: undefined,
   };
 
   componentDidMount() {
@@ -29,46 +29,48 @@ export default class Main extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { tarefas, index } = this.state;
-    let { novaTarefa } = this.state;
-    novaTarefa = novaTarefa.trim();
+    const { tarefas } = this.state;
+    const { inputTarefa } = this.state;
 
-    if (tarefas.indexOf(novaTarefa) !== -1) return;
+    if (!inputTarefa) return '';
 
-    const novasTarefas = [...tarefas];
-
-    if (index == -1) {
-      this.setState({
-        tarefas: [...novasTarefas, novaTarefa],
-        novaTarefa: '',
-      });
-    } else {
-      novasTarefas[index] = novaTarefa;
-
-      this.setState({
-        tarefas: [...novasTarefas],
-        index: -1,
-      });
-    }
-  };
-
-  handleChecked = (e) => {
     this.setState({
-      novaTarefa: e.target.value,
+      tarefas: [
+        ...tarefas,
+        { id: String(Date.now()), name: inputTarefa, isCompleted: false },
+      ],
+      inputTarefa: '',
     });
   };
 
   handleChange = (e) => {
     this.setState({
-      novaTarefa: e.target.value,
+      inputTarefa: e.target.value,
     });
   };
 
-  handleEdit = (e, index) => {
-    const { tarefas } = this.state;
+  handleOpenModal = (tarefa) => {
+    console.log('handleOpenModal: ', tarefa);
+
+    this.setState({ isModalOpen: true });
+  };
+
+  handleCloseModal = () => {
+    this.setState({ isModalOpen: false, editingTodo: undefined });
+  };
+
+  handleEdit = (payload) => {
+    const novasTarefas = this.state.tarefas.map(function (tarefa) {
+      if (payload.id === tarefa.id) return { ...tarefa, ...payload };
+
+      return tarefa;
+    });
+
     this.setState({
-      index,
-      novaTarefa: tarefas[index],
+      tarefas: novasTarefas,
+
+      isModalOpen: false,
+      // Setar o state da tarefa em que esta sendo editada
     });
   };
 
@@ -82,24 +84,43 @@ export default class Main extends Component {
     });
   };
 
+  handleCompleteTodo = (tarefa_id) => {
+    // console.log('handleCompleteTodo: ', tarefa_id);
+    const novasTarefas = this.state.tarefas.map(function (tarefa) {
+      if (tarefa_id === tarefa.id)
+        return { ...tarefa, isCompleted: !tarefa.isCompleted };
+
+      return tarefa;
+    });
+    this.setState({
+      tarefas: novasTarefas,
+    });
+    // Atualizar no Array de tarefas a tarefa com o mesmo tarefa.id para mudar o isCompleted do objeto para o inverso de true ou false (true => false / false => true) = !tarefa.isCompleted
+  };
+
   render() {
-    const { novaTarefa, tarefas } = this.state;
+    const { inputTarefa, tarefas } = this.state;
 
     return (
       <div className="main">
-        <h1>Todo</h1>
+        <h1></h1>
 
         <Form
           handleSubmit={this.handleSubmit}
           handleChange={this.handleChange}
-          novaTarefa={novaTarefa}
+          novaTarefa={inputTarefa}
         />
-
         <Tarefas
           tarefas={tarefas}
-          handleEdit={this.handleEdit}
+          handleEdit={this.handleOpenModal}
           handleDelete={this.handleDelete}
-          handleChecked={this.handleChecked}
+          handleTogleIsCompleted={this.handleCompleteTodo}
+        />
+        <Modal
+          todo={this.state.editingTodo}
+          handleEditTodo={this.handleEdit}
+          closeModal={this.handleCloseModal}
+          isModalOpen={this.state.isModalOpen}
         />
       </div>
     );
