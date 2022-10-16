@@ -52,7 +52,7 @@ export default class Main extends Component {
   handleOpenModal = (tarefa) => {
     console.log('handleOpenModal: ', tarefa);
 
-    this.setState({ isModalOpen: true });
+    this.setState({ isModalOpen: true, editingTodo: tarefa });
   };
 
   handleCloseModal = () => {
@@ -85,7 +85,6 @@ export default class Main extends Component {
   };
 
   handleCompleteTodo = (tarefa_id) => {
-    // console.log('handleCompleteTodo: ', tarefa_id);
     const novasTarefas = this.state.tarefas.map(function (tarefa) {
       if (tarefa_id === tarefa.id)
         return { ...tarefa, isCompleted: !tarefa.isCompleted };
@@ -95,7 +94,6 @@ export default class Main extends Component {
     this.setState({
       tarefas: novasTarefas,
     });
-    // Atualizar no Array de tarefas a tarefa com o mesmo tarefa.id para mudar o isCompleted do objeto para o inverso de true ou false (true => false / false => true) = !tarefa.isCompleted
   };
 
   render() {

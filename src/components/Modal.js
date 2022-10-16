@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 import './Modal.css';
@@ -6,6 +6,8 @@ import './Modal.css';
 ReactModal.setAppElement('#root');
 
 function Modal(props) {
+  console.log(props.todo);
+  const [inputValue, setInputValue] = useState('');
   return (
     <div className="Container">
       <ReactModal
@@ -14,17 +16,26 @@ function Modal(props) {
         overlayClassName="modal-overlay"
         className="modal-content"
         closeModal={props.closeModal}
-        handleEditTodo={props.handleEditTodo}
       >
+        <h1>{props.todo?.name}</h1>
         <p>Editing</p>
-        <h1>Finish to developrer things</h1>
-        <input className="text"></input>
+        <input
+          onChange={(event) => setInputValue(event.target.value)}
+          type="text"
+          value={inputValue}
+        />
 
         <button onClick={props.closeModal} className="cancel">
           cancel
         </button>
         <div>
-          <button onClick={props.handleEditTodo} className="Edit">
+          <button
+            onClick={() => {
+              props.handleEditTodo({ ...props.todo, name: inputValue });
+              setInputValue;
+            }}
+            className="Edit"
+          >
             update
           </button>
         </div>
@@ -37,6 +48,7 @@ Modal.propTypes = {
   isModalOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   handleEditTodo: PropTypes.func.isRequired,
+  todo: PropTypes.object,
 };
 
 export default Modal;
